@@ -277,7 +277,8 @@ $if(footnotes-pretty)$
 \setlength{\skip\footins}{0.3cm} % set space between page content and footnote
 \setlength{\footskip}{0.9cm} % set space between footnote and page bottom
 $endif$
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}
+{\usepackage{hyperref}}
 \hypersetup{
 $if(title-meta)$
   pdftitle={$title-meta$},
@@ -294,17 +295,19 @@ $endif$
 $if(keywords)$
   pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
 $endif$
-$if(colorlinks)$
   colorlinks=true,
-  linkcolor={$if(linkcolor)$$linkcolor$$else$default-linkcolor$endif$},
-  filecolor={$if(filecolor)$$filecolor$$else$default-filecolor$endif$},
-  citecolor={$if(citecolor)$$citecolor$$else$default-citecolor$endif$},
-  urlcolor={$if(urlcolor)$$urlcolor$$else$default-urlcolor$endif$},
-$else$
-  hidelinks,
-$endif$
+  linkcolor=blue,
+  linkbordercolor=blue,
   breaklinks=true,
   pdfcreator={LaTeX via pandoc with the Eisvogel template}}
+% technique inspired by https://tex.stackexchange.com/questions/26071/how-can-i-have-colored-and-underlined-links-with-hyperref
+\makeatletter
+\Hy@AtBeginDocument{%
+  \def\@pdfborder{0 0 1}% Overrides border definition set with colorlinks=true
+  \def\@pdfborderstyle{/S/U/W 1}% Overrides border style set with colorlinks=true
+                                % Hyperlink border style will be underline of width 1pt
+}
+\makeatother
 \urlstyle{same} % disable monospaced font for URLs
 $if(verbatim-in-note)$
 \VerbatimFootnotes % allow verbatim text in footnotes
